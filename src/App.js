@@ -1,26 +1,35 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { db } from './firebase'
 
-function App() {
+let sensorData = []
+const senseHat = db.collection('senseHat').get()
+  .then((data) => {
+    data.forEach(doc => {
+      sensorData.push({
+        id: doc.id,
+        timestamp: doc.data().timestamp,
+        temperature: doc.data().temperature,
+        humidity: doc.data().humidity,
+        pressure: doc.data().pressure,
+        compass: doc.data().compass
+      })
+    })
+  })
+
+console.log(sensorData);
+
+const reptiles = [{ 'name': 'alligator' }, { 'name': 'snake' }, { 'name': 'lizard' }];
+
+export default function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Sensor Data Here Somewhere...</h1>
+      <ol>
+        {reptiles.map(s => (
+          <li>{s.name}</li>
+        ))}
+      </ol>
     </div>
   );
 }
-
-export default App;
