@@ -1,9 +1,12 @@
 import React from 'react';
-import './App.css';
-import { db } from './firebase'
+import { db } from './firebase';
+
 
 let sensorData = []
-const senseHat = db.collection('senseHat').get()
+db.collection('senseHat')
+  // .orderBy("timestamp")
+  .limit(24)
+  .get()
   .then((data) => {
     data.forEach(doc => {
       sensorData.push({
@@ -19,17 +22,21 @@ const senseHat = db.collection('senseHat').get()
 
 console.log(sensorData);
 
-const reptiles = [{ 'name': 'alligator' }, { 'name': 'snake' }, { 'name': 'lizard' }];
+/////////////////////////////////////////////////////////////////////////////
+// Trying to display the data from Firestore on the webpage but can't 
+// using the data returned above. I think I need to call the cloud function
+// rather because data is just returned as JSON...
+/////////////////////////////////////////////////////////////////////////////
 
 export default function App() {
   return (
     <div className="App">
       <h1>Sensor Data Here Somewhere...</h1>
-      <ol>
-        {reptiles.map(s => (
-          <li>{s.name}</li>
+      {/* <ul>
+        {sensorData.forEach(doc => (
+          <li>Hello</li>
         ))}
-      </ol>
+      </ul> */}
     </div>
   );
 }
